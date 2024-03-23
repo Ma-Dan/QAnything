@@ -38,11 +38,11 @@ class UnstructuredPaddlePDFLoader(UnstructuredFileLoader):
                     pix = page.get_pixmap()
                     img = np.frombuffer(pix.samples, dtype=np.uint8).reshape((pix.h, pix.w, pix.n))
 
-                    img_data = {"img64": base64.b64encode(img).decode("utf-8"), "height": pix.h, "width": pix.w,
-                                "channels": pix.n}
+                    img_data = {"img64": base64.b64encode(img).decode("utf-8"), "height": pix.h, "width": pix.w, "channels": pix.n}
                     result = self.ocr_engine(img_data)
                     result = [line for line in result if line]
-                    ocr_result = [i[1][0] for line in result for i in line]
+
+                    ocr_result = [line[1][0] for line in result]
                     fout.write("\n".join(ocr_result))
             if os.path.exists(img_name):
                 os.remove(img_name)

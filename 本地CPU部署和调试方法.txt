@@ -1,0 +1,25 @@
+1.运行docker-compose的mulvis数据库和mysql服务
+sudo docker-compose -f docker-compose-database.yaml -p user start
+备注:docker-compose-database.yaml映射了两个服务的端口到本地机器
+
+2.运行CPU版BCEmbedding和PaddleOCR服务
+cd dependent_server
+python server.py
+备注:按照requirements安装依赖包,其中paddleocr需要安装2.6版本,并且Flask服务需要单进程.因为可能遇到问题 https://github.com/PaddlePaddle/PaddleOCR/issues/8153
+     该服务在7861端口
+
+3.运行后端服务
+这里修改了OpenAI为使用Azure云服务版本,设置对应环境变量 OPENAI_API_KEY AZURE_ENDPOINT API_VERSION OPENAI_MODEL
+python -u qanything_kernel/qanything_server/sanic_api.py --mode "online"
+备注:后端服务运行在8777端口,第一次运行会初始化mysql和milvus数据库
+
+4.运行前端
+cd front_end
+npm install
+npm run dev
+
+5.打开界面
+浏览器打开
+http://127.0.0.1:5052
+
+备注:第一次运行可能遇到nltk_data下载问题,可以自己下载后放到当前用户目录

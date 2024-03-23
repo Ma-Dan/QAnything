@@ -34,7 +34,7 @@ class UnstructuredPaddleImageLoader(UnstructuredFileLoader):
             result = self.ocr_engine(img_data)
             result = [line for line in result if line]
 
-            ocr_result = [i[1][0] for line in result for i in line]
+            ocr_result = [line[1][0] for line in result]
             txt_file_path = os.path.join(full_dir_path, "%s.txt" % (filename))
             with open(txt_file_path, 'w', encoding='utf-8') as fout:
                 fout.write("\n".join(ocr_result))
